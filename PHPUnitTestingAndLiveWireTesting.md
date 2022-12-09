@@ -19,7 +19,7 @@ $this->get('/profile/edit')
 
 **test db model/create functions**
 ```php
-$user = User::factory()->create();
+        $user = User::factory()->create();
 
         $profile = Profile::factory()
             ->forUser($user)
@@ -31,7 +31,7 @@ $user = User::factory()->create();
 
 **test db model/belongsTo relationship functions**
 ```php
-$user = User::factory()->create();
+        $user = User::factory()->create();
 
         $profile = Profile::factory()
             ->forUser($user)
