@@ -1,14 +1,15 @@
 [PHP Why return new static? ](https://stackoverflow.com/questions/37460592/why-return-new-static-php)
 
-new static instantiates a new object from the current class, and works with late static bindings (instantiates the subclass if the class was subclassed, I expect you understand that).
+new static instantiates a new object from the current class (instantiates the subclass if the class was subclassed).
 
-Having a static method on a class which returns a new instance of same is an alternative constructor. Meaning, typically your constructor is public function __construct, and typically it requires a certain bunch of parameters:
+Having a static method on a class which returns a new instance of same is an alternative constructor.
 ```php
 class Foo {
     public function __construct(BarInterface $bar, array $baz = []) { ... }
 }
 ```
-Having an alternative constructor allows you to provide different defaults, or convenience shortcuts to instantiate this class without having to supply those specific arguments and/or for being able to provide different arguments which the alternative constructor will convert to the canonical ones:
+Having an alternative constructor allows you to provide different defaults, or convenience shortcuts to instantiate this class without having to supply 
+those specific arguments and/or for being able to provide different arguments which the alternative constructor will convert to the canonical ones:
 ```php
 class Foo {
 
@@ -24,14 +25,6 @@ class Foo {
 
 }
 ```
-Now, even though your canonical constructor requires a bunch of complex arguments, you can create a default instance of your class, which will probably be fine for most uses, simply with Foo::getDefault().
-
-The canonical example in PHP for this is DateTime and DateTime::createFromFormat.
-
-In your concrete example the alternative constructor doesn't actually do anything, so it's rather superfluous, but I expect that's because it's an incomplete example. If there's indeed an alternative constructor which does nothing other than new static, it's probably just meant as convenience syntax over (new Foo)->, which I find questionable.
-
-
-
 [New self vs. new static](https://stackoverflow.com/questions/5197300/new-self-vs-new-static)
 
 ```php
