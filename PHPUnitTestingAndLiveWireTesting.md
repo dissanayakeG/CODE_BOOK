@@ -83,5 +83,4 @@ $this->get('/profile/edit')
                 'bio' => $bio,
             ];
     });
-
 ```
