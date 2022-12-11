@@ -1,3 +1,24 @@
+[When should I use 'self' over '$this'](https://stackoverflow.com/questions/151969/when-should-i-use-self-over-this)
+
+*Use $this to refer to the current object. Use self to refer to the current class. In other words, use $this->member for non-static members,
+use self::$member for static members.*
+
+```php
+<?php
+class X {
+    private $non_static_member = 1;
+    private static $static_member = 2;
+
+    function __construct() {
+        echo $this->non_static_member . ' '
+           . self::$static_member;
+    }
+}
+
+new X();
+?>
+```
+
 [PHP Why return new static? ](https://stackoverflow.com/questions/37460592/why-return-new-static-php)
 
 new static instantiates a new object from the current class (instantiates the subclass if the class was subclassed).
