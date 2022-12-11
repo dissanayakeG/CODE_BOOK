@@ -10,8 +10,7 @@ class X {
     private static $static_member = 2;
 
     function __construct() {
-        echo $this->non_static_member . ' '
-           . self::$static_member;
+        echo $this->non_static_member . ' ' . self::$static_member;
     }
 }
 
