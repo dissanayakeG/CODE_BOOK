@@ -1,3 +1,60 @@
+**Laravel's Container**
+
+*Behind the scenes Laravel resolves all your controller classes from the Container, that's the reason you can 
+type hint any class and get an instance really easily.*
+
+```php
+App::make('Slack\Api'); // Using the App Facade
+app('Slack\Api'); // Using the app helper function
+resolve('Slack\Client'); // Using the resolve helper function
+
+<?php
+
+namespace Slack;
+class Api
+{
+    public function __construct(Class $dependency)
+    {
+        $this->dependency = $dependency;
+    }
+}
+```
+
+*Not all dependencies will be resolvable by the Container*
+
+*you can pass an array as the second parameter with any data that should be sent to the class*
+
+```php
+<?php
+
+namespace Calebporzio\Onboard;
+
+class OnboardingManager
+{
+    public function __construct($user, OnboardingSteps $onboardingSteps)
+    {
+        $this->steps = $onboardingSteps->steps($user);
+    }
+}
+```
+*we aren't type hinting the $user dependency, so the Container wouldn't know how to fetch this dependency for us*
+
+*This is the trait to be added to the app's User class.*
+```php
+<?php
+namespace Calebporzio\Onboard;
+use Illuminate\Support\Facades\App;
+
+trait GetsOnboarded
+{
+    public function onboarding()
+    {
+        return App::make(OnboardingManager::class, ['user' => $this]);
+    }
+}
+```
+*we manually pass in the value for the $user dependency*
+
 **Facades**
 
 *facade is a class that provides access to an object from the container*

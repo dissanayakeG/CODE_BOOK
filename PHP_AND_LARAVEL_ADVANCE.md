@@ -73,7 +73,6 @@ static in this case means the current object scope. It is used in late static bi
 Normally this is going to be the same as using self. The place it differs is when you have a object heirarchy where the reference to the scope is defined on a parent but is being called on the child. self in that case would reference the parents scope whereas static would reference the child's
 
 ```php
-
 class A{
     function selfFactory(){
         return new self();
@@ -86,8 +85,6 @@ class A{
 
 class B extends A{
 }
-
-
 $b = new B();
 
 $a1 = $b->selfFactory(); // a1 is an instance of A
