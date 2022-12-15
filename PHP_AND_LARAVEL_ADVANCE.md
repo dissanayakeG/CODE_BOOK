@@ -18,6 +18,16 @@ new X();
 ?>
 ```
 
+to call parent class static methods/properties
+```php
+class Bar extends Foo
+{
+    public function fooStatic() {
+        return parent::$my_static;
+    }
+}
+```
+
 [PHP Why return new static? ](https://stackoverflow.com/questions/37460592/why-return-new-static-php)
 
 new static instantiates a new object from the current class (instantiates the subclass if the class was subclassed).
