@@ -41,14 +41,6 @@ Having a static method on a class which returns a new instance of same is an alt
 ```php
 class Foo {
     public function __construct(BarInterface $bar, array $baz = []) { ... }
-}
-```
-Having an alternative constructor allows you to provide different defaults, or convenience shortcuts to instantiate this class without having to supply 
-those specific arguments and/or for being able to provide different arguments which the alternative constructor will convert to the canonical ones:
-```php
-class Foo {
-
-    public function __construct(BarInterface $bar, array $baz = []) { ... }
 
     public static function fromBarString($bar) {
         return new static(new Bar($bar));
