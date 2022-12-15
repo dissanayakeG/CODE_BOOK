@@ -1,7 +1,12 @@
 [When should I use 'self' over '$this'](https://stackoverflow.com/questions/151969/when-should-i-use-self-over-this)
 
-*Use $this to refer to the current object. Use self to refer to the current class. In other words, use $this->member for non-static members,
-use self::$member for static members.*
+ $this->refer->current object
+
+ self->refer->current class
+ 
+ $this->member->refer->non-static members
+ 
+ self::$member->refer-static members
 
 ```php
 <?php
