@@ -73,32 +73,33 @@ echo get_class(A::get_self()); // A
 echo get_class(A::get_static()); // A
 ```
 
-[New self vs. new static](https://stackoverflow.com/questions/16977369/php-new-staticvariable)
-
-static in this case means the current object scope. It is used in late static binding.
-
-Normally this is going to be the same as using self. The place it differs is when you have a object heirarchy where the reference to the scope is defined on a parent but is being called on the child. self in that case would reference the parents scope whereas static would reference the child's
-
 ```php
-class A{
-    function selfFactory(){
-        return new self();
+class alpha {
+    function classname(){
+        return __CLASS__;
     }
 
-    function staticFactory(){
-        return new static();
+    function selfname(){
+        return self::classname();
+    }
+
+    function staticname(){
+        return static::classname();
     }
 }
 
-class B extends A{
+class beta extends alpha {
+
+    function classname(){
+        return __CLASS__;
+    }
 }
-$b = new B();
 
-$a1 = $b->selfFactory(); // a1 is an instance of A
-
-$a2 = $b->staticFactory(); // a2 is an instance of B
+$beta = new beta();
+echo $beta->selfname(); // Output: alpha
+echo $beta->staticname(); // Output: beta
+//However, if we remove the declaration of the classname function from the beta class, we get 'alphaalpha' as the result.
 ```
-It's easiest to think about self as being the defining scope and static being the current object scope.
 
 [PHP anonymous function vs Regular functions](https://www.elated.com/php-anonymous-functions/)
 
