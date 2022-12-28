@@ -1,3 +1,31 @@
+**with()**
+
+*we can name the method anything you want with with() in laravel*
+```php
+return view('index')
+    ->withName('Name')
+    ->withFullName('Full Name')
+    ->withaddress('Your address')
+    ->withcountryName('CountryName');
+```
+
+*can access the values in view explained below*
+```
+    withName('Name') in view it becomes $name
+    withFullName('Full Name') in view it becomes $fullName
+    withaddress('Your address') in view it becomes $address
+    withcountryName('CountryName') in view it becomes $countryName
+```
+
+*All of the syntax below archives the same thing
+```
+    return view('blog')->withBlogs($blogs);    
+    return view('blog')->with('blogs', $blogs);    
+    return view('blog')->with(compact('blogs'));    
+    return view('blog', compact('blogs'));
+```
+
+
 **rescue()**
 
 *The rescue function executes the given closure and catches any exceptions that occur during its 

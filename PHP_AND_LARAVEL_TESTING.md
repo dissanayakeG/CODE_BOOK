@@ -1,4 +1,28 @@
-#LiveWire
+###Setting Up the environment
+
+*uncomment the **DB_CONNECTION** and **DB_DATABASE** in phpunit.xml*
+
+**configure a new folder for testing**
+
+*add below in phpunit.xml*
+```xml
+<testsuite name="Livewire">
+    <directory suffix="Test.php">./tests/Livewire</directory>
+</testsuite>
+```
+*note suffix="Test.php", so all the test cases inside this directory must suffixed with Test.php*
+
+*add RefreshDatabase trait in tests/TestCase.php*
+```php
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication, RefreshDatabase;
+}
+```
+
+###LiveWire
 **Simulating user loging to system**
 ```php
 $this->actingAs(User::factory()->create());
