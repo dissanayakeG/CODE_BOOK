@@ -1,6 +1,6 @@
-The createStub($type) and createMock($type) methods immediately return a test double object for the specified type (interface or class). 
+The ```createStub($type)``` and ```createMock($type)``` methods immediately return a test double object for the specified type (interface or class). 
 
-The __construct() and __clone() methods of the original class are not executed and the arguments passed to a method of the test double will not be cloned.
+The ```__construct()``` and ```__clone()``` methods of the original class are not executed and the arguments passed to a method of the test double will not be cloned.
  
 note that final, private, and static methods cannot be stubbed or mocked
  
@@ -58,7 +58,7 @@ final class StubTest extends TestCase
 }
 ```
 *“Behind the scenes”, PHPUnit automatically generates a new PHP class that implements the desired behavior 
-when the createStub() method is used.*
+when the ```createStub()``` method is used.*
 
 **Mock Objects**
 
