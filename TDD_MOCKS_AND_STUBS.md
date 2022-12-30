@@ -149,21 +149,26 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 }
 ```
 **Mock Object**
+
 A mock object is an object that you would create using PHPUnit’s getMockBuilder() method. 
 It is basically an object that extends the class you define and allows you to perform nifty tricks and assertions on it.
 
 **Stub Method**
+
 A stub method is a method contained within a mock object that returns null by default,
 but allows you to easily override the return value.
 
 **Mock Method**
+
 it does the exact same thing its original method would.
 any code that is in the method you are mocking will actually run and will not return null by default
 
-mock methods do not allow you to override the return value
+mock methods do not allow you to override the return value.
+
 a stub is a method that returns null by default
  
 **THE FOUR PATHWAYS OF GETMOCKBUILDER()**
+
 It all depends on your use, or non-use, of the setMethods() method.
 
 **1 Do not call setMethods()**
@@ -187,7 +192,9 @@ $authorizeNet = $this->getMockBuilder('\AuthorizeNetAIM')
     ->setMethods(array())
     ->getMock();
 ```
+```
 This produces a mock object that is exactly the same as if you have not called setMethods() at all. The methods
+```
 
 **3  Passing null**
 ```php
@@ -197,11 +204,12 @@ $authorizeNet = $this->getMockBuilder('\AuthorizeNetAIM')
     ->setMethods(null)
     ->getMock();
 ```
+```
 This produces a mock object where the methods
-- Are all mocks,
-- Run the actual code contained within the method when called,
-- Do not allow you to override the return value
-
+  Are all mocks,
+  Run the actual code contained within the method when called,
+  Do not allow you to override the return value
+```
     
 **4 Passing an array containing method names**
 ```php
@@ -210,15 +218,16 @@ $authorizeNet = $this->getMockBuilder('\AuthorizeNetAIM')
     ->setMethods(array('authorizeAndCapture', 'foobar'))
     ->getMock();
 ```
-
+```
 This produces a mock object whose methods are a mix of the above three scenarios.
 
 The methods you have identified
--  Are all stubs,
-- All return null by default,
-- Are easily overridable
+   Are all stubs,
+  All return null by default,
+  Are easily overridable
     
 Methods you did not identify
-- Are all mocks,
-- Run the actual code contained within the method when called,
-- Do not allow you to override the return value
+  Are all mocks,
+  Run the actual code contained within the method when called,
+  Do not allow you to override the return value
+```
