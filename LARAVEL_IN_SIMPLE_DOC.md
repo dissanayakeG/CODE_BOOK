@@ -151,3 +151,14 @@ $upper = $collection->toUpper();
 [Laravel macros](https://levelup.gitconnected.com/understanding-laravel-macros-e2f493484a38)
 
 *Laravel macros allow us to add custom functionality to Laravel core components or classes. In other words, they allow us to extend Laravel classes*
+
+**Laravel macros**
+
+allow  add custom functionality to Laravel core components or classes.
+ex: 
+```php
+Response::macro('csv', function ($headers, $rows, $filename) {});
+
+//now his can be used as
+return response()->csv($headers, $rows, $filename);
+```

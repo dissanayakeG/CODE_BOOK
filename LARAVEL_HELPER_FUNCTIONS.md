@@ -2,11 +2,11 @@
 
 *we can name the method anything you want with with() in laravel*
 ```php
-return view('index')
-    ->withName('Name')
-    ->withFullName('Full Name')
-    ->withaddress('Your address')
-    ->withcountryName('CountryName');
+    return view('index')
+        ->withName('Name')
+        ->withFullName('Full Name')
+        ->withaddress('Your address')
+        ->withcountryName('CountryName');
 ```
 
 *can access the values in view explained below*
@@ -34,15 +34,15 @@ the request will continue processing. Second argument will be the "default" valu
  returned if an exception occurs while executing the closure*
 
 ```php
-return rescue(function () {
-    return $this->method();
-}, false);
- 
-return rescue(function () {
-    return $this->method();
-}, function () {
-    return $this->failure();
-});
+    return rescue(function () {
+        return $this->method();
+    }, false);
+     
+    return rescue(function () {
+        return $this->method();
+    }, function () {
+        return $this->failure();
+    });
 ```
 
 **wrap()**
@@ -51,16 +51,32 @@ return rescue(function () {
  to make() method, except it will create a collection from any value supplied to it*
  
  ```php
-$product = new Product();
-$products = Collection::wrap($product);
+    $product = new Product();
+    $products = Collection::wrap($product);
 
-function addProductsToOrder($products) {
-    // Ensure that the products is always a collection.
-    Collection::wrap($products)->each->addToOrder();
-}
+    function addProductsToOrder($products) {
+        // Ensure that the products is always a collection.
+        Collection::wrap($products)->each->addToOrder();
+    }
 ```
 
 **unwrap() is opposite**
 
 *, if the provided value is already a collection, the collection’s underlying items will be returned.
  If not then the value will be returned as it is without modification.*
+ 
+ - resolve()
+ - config()
+ - get_data()
+ - set_date()
+ - Str::of()
+ - Str::markdown()
+ - Str::start()
+- 
+ - tap()
+ - pipe()
+ - throw_if()
+ - throe_unless()
+ - match()
+ - collect()
+ 
