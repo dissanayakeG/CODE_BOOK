@@ -80,3 +80,12 @@ the request will continue processing. Second argument will be the "default" valu
  - match()
  - collect()
  
+ 
+```php
+ $value = Cache::remember('users', $seconds, function () {
+     return DB::table('users')->get();
+ });
+```
+ 
+*If the item does not exist in the cache, the closure passed to the remember method will be executed and its result 
+will be placed in the cache.*
