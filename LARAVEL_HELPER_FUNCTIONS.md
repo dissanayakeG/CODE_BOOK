@@ -123,8 +123,6 @@ the request will continue processing. Second argument will be the "default" valu
     // [4, 5]
 ```
 
-
-
 **tap()**
 -The tap method passes the collection to the given callback, allowing you to "tap" into the collection at a specific point and do something with the items while not affecting the collection itself. The collection is then returned by the tap method:
 
@@ -137,6 +135,28 @@ the request will continue processing. Second argument will be the "default" valu
     ->shift();
  
 // 1
+```
+
+**take(), takeUntil(), takeWhile()**
+```php
+    $collection = collect([0, 1, 2, 3, 4, 5]);
+
+    $chunk = $collection->take(3); //take first 3
+    $chunk->all();// [0, 1, 2]
+
+    $chunk = $collection->take(-2); //take last 2
+    $chunk->all();// [4, 5]
+
+    $subset = $collection->takeUntil(function ($item) {
+        return $item >= 3;
+    }); 
+    $subset->all();// [1, 2] //until the given callback returns true, if not found or callback never return true, return all
+    $subset = $collection->takeUntil(3); //until the given value is found
+
+    $subset = $collection->takeWhile(function ($item) {
+        return $item < 3;
+    });    
+    $subset->all();// [1, 2] //until the given callback returns false, if not callback return false, return all
 ```
 
 
