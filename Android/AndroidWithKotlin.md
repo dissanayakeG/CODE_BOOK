@@ -333,7 +333,7 @@ logging in android studio
     }
 ```
 ```
-//starting he application
+//starting the application
     11:44:24.250  D  onCreate Called
     11:44:24.298  D  onStart Called
     11:44:24.300  D  onResume Called
@@ -350,7 +350,16 @@ logging in android studio
     11:46:12.570  D  onResume Called
 ```
 
-For example, if the user changes the device language, the whole layout might need to change to accommodate different text directions and string lengths. If the user plugs the device into a dock or adds a physical keyboard, the app layout may need to take advantage of a different display size or layout. And if the device orientation changes—if the device is rotated from portrait to landscape or back the other way—the layout may need to change to fit the new orientation. Let's look at how the app behaves in this scenario.
+**Configuration changes**
+A configuration change happens when the state of the device changes so radically that the easiest way for the system to resolve the change is to destroy and rebuild the activity.
+
+The most common example of a configuration change is when the user rotates the device from portrait to landscape mode, or from landscape to portrait mode. A configuration change can also occur when the device language changes or a hardware keyboard is plugged in.
+
+When a configuration change occurs, Android invokes all the activity lifecycle's shutdown callbacks. Then Android restarts the activity from scratch, running all the lifecycle startup callbacks.
+
+When Android shuts down an app because of a configuration change, it restarts the activity with the state bundle that is available to onCreate().
+
+As with process shutdown, save your app's state to the bundle in onSaveInstanceState().
 
 ```
     D/MainActivity: onCreate Called
