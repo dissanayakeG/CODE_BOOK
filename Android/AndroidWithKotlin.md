@@ -245,18 +245,159 @@ For
 ```
 
 
+**access resources**
+
+- in app/src/main/res/drawable
+`R.drawable.image1`
+
+- in app/src/main/res/values/string.xml
+`context.resources.getString(stringResourceId)`
+
+- in app/src/main/res/layout/list_item.xml
+`R.layout.list_item`
 
 
+**Collections**
+
+sets
+----
+ It's a group of related items, but unlike a list, there can't be any duplicates, and the order doesn't matter.
+
+```kotlin
+    fun main() {
+        val numbers = listOf(0, 3, 8, 4, 0, 5, 5, 8, 9, 2)
+        println("list:   ${numbers}")
+
+        val setOfNumbers = numbers.toSet() //list to set convert
+        println("set:    ${setOfNumbers}")
+
+        val set1 = setOf(1,2,3)
+        val set2 = mutableSetOf(3,2,1)
+
+        println("$set1 == $set2: ${set1 == set2}") //[1, 2, 3] == [3, 2, 1]: true
+        println("contains 7: ${setOfNumbers.contains(7)}") //contains 7: false
+    }
+```
+maps
+----
+
+```kotlin
+    fun main() {
+        val peopleAges = mutableMapOf<String, Int>(
+            "Fred" to 30,
+            "Ann" to 23
+        )
+        println(peopleAges) //{Fred=30, Ann=23}
+        peopleAges.put("Barbara", 42)
+        peopleAges["Joe"] = 51
+        println(peopleAges) //{Fred=30, Ann=23, Barbara=42, Joe=51}
+        peopleAges["Fred"] = 31 //{Fred=31, Ann=23, Barbara=42, Joe=51}
+    }
+```
+
+**forEach**
+
+```
+peopleAges.forEach { print("${it.key} is ${it.value}, ") } 
+//Fred is 31, Ann is 23, Barbara is 42, Joe is 51, //has extra comma
+```
+**map**
+
+```
+println(peopleAges.map { "${it.key} is ${it.value}" }.joinToString(", ") )
+//Fred is 31, Ann is 23, Barbara is 42, Joe is 51 //no extra comma
+```
+**filter**
+```
+val filteredNames = peopleAges.filter { it.key.length < 4 }
+println(filteredNames) //{Ann=23, Joe=51}
+```
 
 
+*When an activity starts from scratch, you see all three of these lifecycle callbacks called in order:*
 
+- `onCreate()` to create the app.
+- `onStart()` to start it and make it visible on the screen.
+- `onResume()` to give the activity focus and make it ready for the user to interact with it.
 
+LifeCycle
+---------
 
+logging in android studio
+- when override parent class lifecycle method, should be imediatly called its supper class method  `super.onStart()`
 
+```kotlin
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart Called")
+    }
+```
+```
+//starting he application
+    11:44:24.250  D  onCreate Called
+    11:44:24.298  D  onStart Called
+    11:44:24.300  D  onResume Called
 
+//unvisible (ex : click home button and come back to screen by recent screens)
+    11:44:49.038  D  onPause Called
+    11:44:49.076  D  onStop Called
+    11:45:04.923  D  onRestart Called
+    11:45:04.924  D  onStart Called
+    11:45:04.924  D  onResume Called
 
+//partially visible (ex : share button click)
+    11:46:04.393  D  onPause Called
+    11:46:12.570  D  onResume Called
+```
 
+For example, if the user changes the device language, the whole layout might need to change to accommodate different text directions and string lengths. If the user plugs the device into a dock or adds a physical keyboard, the app layout may need to take advantage of a different display size or layout. And if the device orientation changes—if the device is rotated from portrait to landscape or back the other way—the layout may need to change to fit the new orientation. Let's look at how the app behaves in this scenario.
 
+```
+    D/MainActivity: onCreate Called
+    D/MainActivity: onStart Called
+    D/MainActivity: onResume Called
+    D/MainActivity: onPause Called
+    D/MainActivity: onStop Called
+    D/MainActivity: onDestroy Called
+    D/MainActivity: onCreate Called
+    D/MainActivity: onStart Called
+```
+solution --> onSaveInstanceState() // this calls after onStop()
 
+- Saving the data each time ensures that updated data in the bundle is available to restore, if it is needed.
 
+```kotlin
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(TAG, "onSaveInstanceState Called")
+    }
+```
 
+```
+//click on home button
+    D/MainActivity: onPause Called
+    D/MainActivity: onStop Called
+    D/MainActivity: onSaveInstanceState Called
+```
+
+**saving data to a bundle and retrive them**
+
+```kotlin
+//KEY_REVENUE and KEY_DESSERT_SOLD are constants defined on the top of the MainActivity
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_REVENUE, revenue)
+        outState.putInt(KEY_DESSERT_SOLD, dessertsSold)
+        Log.d(TAG, "onSaveInstanceState Called")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        //add below to retrive from saved bundle
+        if (savedInstanceState != null) {
+            revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
+            dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
+        }
+    }
+
+```
+Notice that onCreate() gets a Bundle each time it is called. When your activity is restarted due to a process shut down, the bundle that you saved is passed to onCreate(). If your activity was starting fresh, this Bundle in onCreate() is null. So if the bundle is not null, you know you're "re-creating" the activity from a previously known point.
