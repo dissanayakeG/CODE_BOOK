@@ -23,7 +23,7 @@ res/layout/activity_main.xml
     </FrameLayout>
 ```
 ```xml
-res/layout/list_item.xml
+res/layout/an_item.xml
 
     <?xml version="1.0" encoding="utf-8"?>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,29 +38,22 @@ java/com/example/affirmations/adapter/ItemAdapter.kt
 
     class ItemAdapter(private val context: Context,private val dataset: List<String>) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
         class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-            val textView: TextView = view.findViewById(R.id.item_title)
+            val anItemText: TextView = view.findViewById(R.id.item_title)
         }
 
-        /**
-        * Create new views (invoked by the layout manager)
-        */
+        //Create new views by an_item.xml
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             // create a new view item by list_item.xml
-            val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+            val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.an_item, parent, false)
             return ItemViewHolder(adapterLayout)
         }
 
-        /**
-        * Replace the contents of a view (invoked by the layout manager)
-        */
+        //Replace the contents of a view created from onCreateViewHolder method
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             val item = dataset[position]
-            holder.textView.text = item
+            holder.anItemText.text = item
         }
 
-        /**
-        * Return the size of your dataset (invoked by the layout manager)
-        */
         override fun getItemCount() = dataset.size
     }
 ```
