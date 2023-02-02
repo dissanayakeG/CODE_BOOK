@@ -320,8 +320,8 @@ println(filteredNames) //{Ann=23, Joe=51}
 - `onStart()` to start it and make it visible on the screen.
 - `onResume()` to give the activity focus and make it ready for the user to interact with it.
 
-LifeCycle
----------
+Activity LifeCycle
+------------------
 
 logging in android studio
 - when override parent class lifecycle method, should be imediatly called its supper class method  `super.onStart()`
@@ -410,3 +410,18 @@ solution --> onSaveInstanceState() // this calls after onStop()
 
 ```
 Notice that onCreate() gets a Bundle each time it is called. When your activity is restarted due to a process shut down, the bundle that you saved is passed to onCreate(). If your activity was starting fresh, this Bundle in onCreate() is null. So if the bundle is not null, you know you're "re-creating" the activity from a previously known point.
+
+Fragment LifeCycle
+------------------
+
+- `onCreate()`: The fragment has been instantiated and is in the CREATED state. However, its corresponding view has not been created yet.
+- `onCreateView()`: This method is where you inflate the layout. The fragment has entered the CREATED state.
+- `onViewCreated()`: This is called after the view is created. In this method, you would typically bind specific views to properties by calling findViewById().
+- `onStart()`: The fragment has entered the STARTED state.
+- `onResume()`: The fragment has entered the RESUMED state and now has focus (can respond to user input).
+- `onPause()`: The fragment has re-entered the STARTED state. The UI is visible to the user
+- `onStop()`: The fragment has re-entered the CREATED state. The object is instantiated but is no longer presented on screen.
+- `onDestroyView()`: Called right before the fragment enters the DESTROYED state. The view has already been removed from memory, but the fragment object still exists.
+- `onDestroy()`: The fragment enters the DESTROYED state.
+
+**Note** : keep in mind the difference with the `onCreate()` method. With activities, you would use this method to inflate the layout and bind views. However, in the fragment lifecycle, `onCreate()` is called before the view is created, so you can't inflate the layout here. Instead, you do this in `onCreateView()`. Then, after the view has been created, the `onViewCreated()` method is called, where you can then bind properties to specific views.
