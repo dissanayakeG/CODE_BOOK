@@ -267,6 +267,11 @@ class FoodAdapter(val context: Context, private val foodList: List<FoodItem>) :
 //java/com/example/recyclerfoodapp/DetailedActivity.kt
 
 class DetailedActivity : AppCompatActivity() {
+
+    companion object {
+        const val SEARCH_PREFIX = "https://www.google.com/search?q="
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed)
@@ -279,6 +284,13 @@ class DetailedActivity : AppCompatActivity() {
             textView.text = foodName
             val imageView: ImageView = findViewById(R.id.detail_image_id)
             imageView.setImageResource(foodImage.toInt())
+
+            //google search
+            imageView.setOnClickListener {
+                val queryUrl: Uri = Uri.parse("${SEARCH_PREFIX}${foodName}")
+                val intent = Intent(Intent.ACTION_VIEW, queryUrl)
+                startActivity(intent)
+            }
         }
     }
 }
