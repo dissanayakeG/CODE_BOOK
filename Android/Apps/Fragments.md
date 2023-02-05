@@ -1,5 +1,4 @@
-Simple Fragment view(Dynamically)
----------------------------------
+## Simple Fragment view(Dynamically)
 
 ```kotlin
 //com/example/fragments/MainActivity.kt
@@ -16,6 +15,8 @@ Simple Fragment view(Dynamically)
                 replace(R.id.fragmentView, firstFragment)
                 commit()
             }
+
+            //same as supportFragmentManager.beginTransaction().replace(R.id.fragmentView, firstFragment).commit()
 
             val f1btn = findViewById<Button>(R.id.fragment_1_btn)
             val f2btn = findViewById<Button>(R.id.fragment_2_btn)
@@ -50,35 +51,16 @@ Simple Fragment view(Dynamically)
 
         <Button
             android:id="@+id/fragment_1_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_1"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_2_btn"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+             />
 
         <Button
             android:id="@+id/fragment_2_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:text="@string/fragment_2"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/fragment_1_btn"
-            app:layout_constraintTop_toTopOf="parent" />
+             />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/fragmentView"
-            app:layout_constraintTop_toBottomOf="@id/fragment_2_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:layout="@layout/fragment_first" />
 
             //if you want to set static fragment use fragment tag instead of FrameLayout and use name property with fragment name
@@ -102,7 +84,7 @@ Simple Fragment view(Dynamically)
     }
 ```
 
- **Note:** inflating fragment inside onCreateView and inflating in constructor is same
+**Note:** inflating fragment inside onCreateView and inflating in constructor is same
 
 ```kotlin
     override fun onCreateView(
@@ -128,15 +110,8 @@ Simple Fragment view(Dynamically)
         tools:context=".FirstFragment">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="Fragment 1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 ```
@@ -152,16 +127,156 @@ Simple Fragment view(Dynamically)
         android:layout_height="match_parent"
         tools:context=".FirstFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView        
             android:text="Fragment 2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+## Fragment Communication
+
+**Note** to communicate among fragments we need to implement an interface in main activity
+
+```kotlin
+//com/example/fragmentcommunicator/MainActivity.kt
+
+    class MainActivity : AppCompatActivity(), Communicator {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val firstFragment = FirstFragment()
+
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, firstFragment)
+                .commit()
+        }
+
+        override fun dataPass(parsString: String) {
+            val bundle = Bundle()
+            bundle.putString("message", parsString)
+
+            val transaction = supportFragmentManager.beginTransaction()
+            val secondFragment = SecondFragment()
+
+            secondFragment.arguments = bundle
+
+            transaction.replace(R.id.fragment_container, secondFragment)
+            transaction.commit()
+        }
+    }
+```
+
+```xml
+//layout/activity_main.xml
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <FrameLayout            
+            android:id="@+id/fragment_container"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+```kotlin
+//com/example/fragmentcommunicator/fragments/Communicator.kt
+    interface Communicator {
+        fun dataPass(parsString: String)
+    }
+```
+
+```kotlin
+//com/example/fragmentcommunicator/fragments/FirstFragment.kt
+
+    class FirstFragment : Fragment() {
+
+        lateinit var communicator: Communicator
+
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val view = inflater.inflate(R.layout.fragment_first, container, false)
+
+            communicator = activity as Communicator
+
+            val sendBtn = view.findViewById<Button>(R.id.fragment_1_send_button)
+            val inputMessage = view.findViewById<EditText>(R.id.fragment_1_edit_text)
+
+            sendBtn.setOnClickListener {
+                communicator.dataPass(inputMessage.text.toString())
+            }
+
+            return view
+        }
+    }
+```
+
+```xml
+//layout/fragment_first.xml
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.FirstFragment">
+
+        <EditText
+            android:id="@+id/fragment_1_edit_text"
+           />
+
+        <Button
+            android:id="@+id/fragment_1_send_button"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+```kotlin
+//com/example/fragmentcommunicator/fragments/SecondFragment.kt
+
+    class SecondFragment : Fragment() {
+
+        var displayString:String? =""
+
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val view = inflater.inflate(R.layout.fragment_second, container, false)
+
+            displayString = arguments?.getString("message")
+            val textView = view.findViewById<TextView>(R.id.fragment_2_text_view)
+
+            textView.text = displayString
+
+            return view
+        }
+    }
+```
+
+```xml
+//layout/fragment_second.xml
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.FirstFragment">
+
+        <TextView
+            android:id="@+id/fragment_2_text_view"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 ```
