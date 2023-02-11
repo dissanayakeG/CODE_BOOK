@@ -172,7 +172,7 @@ we need recycler view as previous samples and load data from rest apis
 
                 override fun onResponse(call: Call<MutableList<DataItem>>,response: Response<MutableList<DataItem>>) {
                     if(response.isSuccessful){
-                        Log.e("tadada daaaa", response.body().toString())
+                        Log.d("Success!", response.body().toString())
 
                         recyclerView.apply {
                             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -182,7 +182,7 @@ we need recycler view as previous samples and load data from rest apis
                 }
 
                 override fun onFailure(call: Call<MutableList<DataItem>>, t: Throwable) {
-                    Log.e("faiiiiiillllldddddd", t.message.toString())
+                    Log.e("Failed", t.message.toString())
                 }
 
             })
