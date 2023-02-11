@@ -108,6 +108,8 @@ we need recycler view as previous samples and load data from rest apis
 
     data class DataItem(
         val title: String?=null,
+        //title should be same key as json respones
+        //if you want to change it add @SerializedName("title") before parameters
     )
 ```
 
@@ -167,8 +169,10 @@ we need recycler view as previous samples and load data from rest apis
             val serviceGenerator = ServiceGenerator.buildService(ApiService::class.java)
             val call = serviceGenerator.getPosts()
 
+            //we can generate below code by  ctrl + shift + spc on call.enqueue()
+
             call.enqueue(object : Callback<MutableList<DataItem>> {
-                //to implement below methods, Alt+Enter by clicking on object
+                //or to implement only below methods, Alt+Enter by clicking on object
 
                 override fun onResponse(call: Call<MutableList<DataItem>>,response: Response<MutableList<DataItem>>) {
                     if(response.isSuccessful){
