@@ -25,7 +25,7 @@ we need recycler view as previous samples and load data from rest apis
 - example `import retrofit2.Callback` in `MainActivity.kt`
 
 ```xml
-layout/activity_main.xml
+//layout/activity_main.xml
 
     <?xml version="1.0" encoding="utf-8"?>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
