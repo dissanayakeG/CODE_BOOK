@@ -127,7 +127,7 @@
         android:layout_height="match_parent"
         tools:context=".FirstFragment">
 
-        <TextView        
+        <TextView
             android:text="Fragment 2"
             />
 
@@ -178,7 +178,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <FrameLayout            
+        <FrameLayout
             android:id="@+id/fragment_container"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
