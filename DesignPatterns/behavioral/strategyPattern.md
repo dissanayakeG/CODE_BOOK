@@ -1,3 +1,5 @@
+- Strategy is a behavioral design pattern that lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+
 - The strategy interface declares operations common to all  supported versions of some algorithm. The context uses this interface to call the algorithm defined by the concrete strategies.
 
 ```php
