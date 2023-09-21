@@ -1,5 +1,7 @@
 - Strategy is a behavioral design pattern that lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
 
+- This pattern is particularly useful when you want to dynamically select and switch between different algorithms or strategies at runtime.
+
 - The strategy interface declares operations common to all  supported versions of some algorithm. The context uses this interface to call the algorithm defined by the concrete strategies.
 
 ```php
@@ -72,4 +74,72 @@ class ExampleApplication is
 
         result = context.executeStrategy(First number, Second number)
         Print result.
+```
+
+**Example**
+
+```php
+// Step 1: Define the PaymentProcessor interface and concrete strategies
+
+interface PaymentProcessor {
+    public function processPayment(float $amount);
+}
+
+class CreditCardProcessor implements PaymentProcessor {
+    public function processPayment(float $amount) {
+        echo "Processing payment of $amount via Credit Card.\n";
+        // Additional Credit Card specific logic
+    }
+}
+
+class PayPalProcessor implements PaymentProcessor {
+    public function processPayment(float $amount) {
+        echo "Processing payment of $amount via PayPal.\n";
+        // Additional PayPal specific logic
+    }
+}
+
+class BitcoinProcessor implements PaymentProcessor {
+    public function processPayment(float $amount) {
+        echo "Processing payment of $amount via Bitcoin.\n";
+        // Additional Bitcoin specific logic
+    }
+}
+
+// Step 2: Define the Context class
+
+class PaymentContext {
+    private $paymentProcessor;
+
+    public function __construct(PaymentProcessor $processor) {
+        $this->paymentProcessor = $processor;
+    }
+
+    public function processPayment(float $amount) {
+        $this->paymentProcessor->processPayment($amount);
+    }
+}
+
+// config.php
+
+return [
+    'payment_method' => 'credit_card'
+];
+
+// client.php
+
+$config = include('config.php');
+
+if ($config['payment_method'] === 'credit_card') {
+    $paymentProcessor = new CreditCardProcessor();
+} elseif ($config['payment_method'] === 'paypal') {
+    $paymentProcessor = new PayPalProcessor();
+} elseif ($config['payment_method'] === 'bitcoin') {
+    $paymentProcessor = new BitcoinProcessor();
+} else {
+    throw new Exception("Invalid payment method specified in configuration.");
+}
+
+$paymentContext = new PaymentContext($paymentProcessor);
+$paymentContext->processPayment(100.00);
 ```

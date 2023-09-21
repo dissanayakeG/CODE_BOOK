@@ -38,7 +38,7 @@ class Application is
     mp4.save()
 ```
 
-Example
+**Example**
 
 ```php
 <?php
