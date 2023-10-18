@@ -114,7 +114,21 @@ Scripts in the `<body>` are re-evaluated
 	}
 ```
 
+- We need to use same public property name when dynamic data binding in order to update form data properly
 
+```php
+
+    public $formData = [];
+
+	//Note: wire:model="formData.{{ $index }}.name"
+
+	<form wire:submit.prevent="submit">
+
+			@foreach ($this->formData as $index => $item)
+				<div class="mt-6">
+					<input type="text" wire:model="formData.{{ $index }}.name" value="{{ $item['name'] }}">
+
+```
 
 
 
