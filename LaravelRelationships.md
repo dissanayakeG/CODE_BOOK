@@ -57,3 +57,73 @@ Referral Modal
             
 >group_user, pivot tbl name should in singular alphabetical order, if we have followed naming convention, 2nd parameter is optional
 >3rd and 4th params are foreign keys
+
+###Polymorphic (One to One)
+
+- Joe's car rentals
+
+- Employee can rent a Car
+- Customer can rent a Car
+
+- parents : Employee & Customer
+- Child : Car
+
+```php
+
+Car migration
+-------------
+    $table->morphs('carable');
+    // or
+    $table->unsignedBigInteger('carable_id');
+    $table->string('carable_type'); //Customer or Employee //This can be aliased in a service provider; otherwise, it saves the full path of the model in the database column.
+
+Car model
+---------
+    public function carable() : MorphTo
+    {
+        return $this->morphTo();
+    }
+
+Customer/Employee Model
+----------------------
+    public function car() : MorphOne
+    {
+        return $this->morphOne(Car::class, 'carable');
+    }
+
+    $employee = Employee::first()->car()->create([....]);
+```
+
+###Polymorphic (One to Many)
+
+- Community website
+
+- Articles can have many comments
+- Threads can have many comments
+
+- Parents: Articles & Threads
+- Child: Comments
+
+```php
+
+Comments migration
+------------------
+    $table->morphs('commentable');
+
+Comments Model
+--------------
+    public function commentable() : MorphTo
+    {
+        return $this->morpTo();
+    }
+
+Article/Thread Model
+----------------------
+    public function comments() : MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+```
+
+###Polymorphic (Many to Many)
