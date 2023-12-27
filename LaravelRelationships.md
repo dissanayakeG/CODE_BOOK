@@ -1,7 +1,6 @@
-https://www.youtube.com/playlist?list=PL1JpS8jP1wgA7YIkG5pJDa0XwvonK-mQR
+> tutorial : https://www.youtube.com/playlist?list=PL1JpS8jP1wgA7YIkG5pJDa0XwvonK-mQR
 
->When using hasMany/through, the function name should be in the plural form; otherwise, use the singular form.
-
+> When using hasMany/through, the function name should be in the plural form; otherwise, use the singular form.
 
 ###hasOne/hasMany
 
@@ -12,7 +11,7 @@ https://www.youtube.com/playlist?list=PL1JpS8jP1wgA7YIkG5pJDa0XwvonK-mQR
 ###belongsTo
 
 ```php
-    $this->belongsTo->(Modal::class, 'Parent ref:ID of my table') 
+    $this->belongsTo->(Modal::class, 'Parent ref:ID of my table')
     //if using naming convention, functionName_id
 ```
 
@@ -29,9 +28,9 @@ https://www.youtube.com/playlist?list=PL1JpS8jP1wgA7YIkG5pJDa0XwvonK-mQR
 Plumber modal
 -------------
 1. $this->hasMany(Client::class)
-5. $this->hasManyThrough(Referral::class, Client::class, 'plumber_id', 'client_id') 
-//2nd param is intermediary class 
-//plumber_id in Client and client_id in Referral 
+5. $this->hasManyThrough(Referral::class, Client::class, 'plumber_id', 'client_id')
+//2nd param is intermediary class
+//plumber_id in Client and client_id in Referral
 //order is client through referral
 
 Client Modal
@@ -54,21 +53,28 @@ Referral Modal
             ->withPivot('active')
             ->withTimestaps()
 ```
-            
->group_user, pivot tbl name should in singular alphabetical order, if we have followed naming convention, 2nd parameter is optional
->3rd and 4th params are foreign keys
+
+> group_user, pivot tbl name should in singular alphabetical order, if we have followed naming convention, 2nd parameter is optional
+> 3rd and 4th params are foreign keys
 
 ###Polymorphic (One to One)
 
-- Joe's car rentals
+-   Joe's car rentals
 
-- Employee can rent a Car
-- Customer can rent a Car
+-   Employee can rent a Car
+-   Customer can rent a Car
 
-- parents : Employee & Customer
-- Child : Car
+-   parents : Employee & Customer
+-   Child : Car
 
 ```php
+Mapping Models in Service Provider
+----------------------------------
+    public function boot(){
+        Relation::morphMap([
+            'Article' => 'App\Models\Article'
+        ]);
+    }
 
 Car migration
 -------------
@@ -96,13 +102,13 @@ Customer/Employee Model
 
 ###Polymorphic (One to Many)
 
-- Community website
+-   Community website
 
-- Articles can have many comments
-- Threads can have many comments
+-   Articles can have many comments
+-   Threads can have many comments
 
-- Parents: Articles & Threads
-- Child: Comments
+-   Parents: Articles & Threads
+-   Child: Comments
 
 ```php
 
@@ -127,3 +133,37 @@ Article/Thread Model
 ```
 
 ###Polymorphic (Many to Many)
+
+-   Articles/threads can have many tags, and a tag can belong to many articles/threads.
+
+```php
+
+//need both tags and taggable tables
+
+taggable migration
+------------------
+    $table->foreignId('tag_id')->constrained('tags');
+    $table->morphs('taggable');
+
+Tag Model
+---------
+    public function threads() : MorphToMany
+    {
+        return $this->morphedByMany(Thread::class, 'taggable');
+    }
+
+    public function articles() : MorphToMany
+    {
+        return $this->morphedByMany(Article::class, 'taggable');
+    }
+
+Article/Thread Model
+----------------------
+    public function tags() : MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+$article = Article::first()->tags()->attach(1)
+$tag = Tag::first()->articles()->first()
+```
