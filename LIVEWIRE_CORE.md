@@ -1,6 +1,6 @@
 - In Alpine.js, you cannot directly manipulate the data in the x-init attribute. Instead, you should use x-init to call a function that will perform the initialization.
 
-- Dont use `'init()'` as `x-init` function name, it will call init function multiple times.
+- Dont use `init()` as `x-init` function name, it will call init function multiple times.
 If the `x-data` object of a component contains an `init()` method, it will be called automatically. For example:
 
 - Internally, Livewire's frontend is built on top of Alpine. In fact, every Livewire component is actually an Alpine component under-the-hood. This means that you can freely utilize Alpine inside your Livewire components.
