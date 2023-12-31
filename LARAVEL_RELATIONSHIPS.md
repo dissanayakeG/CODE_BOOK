@@ -46,12 +46,26 @@ Referral Modal
 
 ###BelongsToMany/ManyToMany (no soft deletes) //use sync,attach,detach methods
 
+Parent : region | store
+Pivot : region_store //singular form of alphabetical order
+//php artisan make:migration create_region_store_table --create=region_store
+
 ```php
-    $this->belongsToMany->(Modal::class, 'pivotTableName', 'group_id', 'user_id')
-            ->as('customName') //so instead of access data like ->pivot->name, can access like >customName->name
-            ->using(PivotModal::class)
-            ->withPivot('active')
-            ->withTimestaps()
+>param 1 : related modal name
+>param 2 : pivot table name
+>param 3 : pivot table fk to me
+>param 4 : pivot table fk to related table
+
+//From storeModal
+
+public function regions()
+{
+    $this->belongsToMany->(Region::class, 'pivotTableName', 'stores_id', 'regions_id')
+            ->as('customName') //options | so instead of access data like ->pivot->name, can access like >customName->name
+            ->using(PivotModal::class) //optional
+            ->withPivot('active') //optional
+            ->withTimestaps() //optional
+}
 ```
 
 > group_user, pivot tbl name should in singular alphabetical order, if we have followed naming convention, 2nd parameter is optional
