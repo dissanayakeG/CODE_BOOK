@@ -1,3 +1,98 @@
+## Intents
+
+```dart
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val explicitIntentButton = findViewById<Button>(R.id.explicit_intent_button)
+
+        //explicitIntent use for internal navigation
+        explicitIntentButton.setOnClickListener {
+            val explicitIntent = Intent(this, SecondActivity::class.java);
+            startActivity(explicitIntent)
+            finish() //click on back button close the app
+        }
+
+        //implicitIntent use for external navigation
+        val implicitIntentButton = findViewById<Button>(R.id.implicit_intent_button)
+        val url = "https://www.google.com"
+        implicitIntentButton.setOnClickListener {
+            val implicitIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(implicitIntent)
+        }
+
+    }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/explicit_intent_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Explicit intent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/implicit_intent_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Implicit intent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/explicit_intent_button"
+         />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+```dart
+class SecondActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_second)
+    }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints"
+        android:text="Hi from second activity!"
+        >
+
+    </TextView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
 ## SIMPLE APP
 
 ```kotlin
@@ -141,7 +236,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" /> //!important
 
 </FrameLayout>
 ```
