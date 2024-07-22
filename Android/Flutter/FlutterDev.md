@@ -1,7 +1,7 @@
 #### Flutter Apps Built as a Widget Tree
 
 At the top of the tree, there is `MaterialApp` if you use the Material Theme.
-The root widget is mostly a stateless widget.
+The root widg et is mostly a stateless widget.
 
 ```dart
 return MaterialApp(
@@ -260,6 +260,8 @@ class HttpService {
 ### map response data into your model
 
 ```dart
+//This is a separate class to deal with http_service class
+//initialize _httpService property on top of the class
 Future<List<Recipe>?> getProducts() async {
     try {
       final response = await _httpService.get("/recipes");
@@ -390,21 +392,6 @@ class Todo {
       todo.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-  }
-
-  static Future<List<Todo>> getAllTodos() async {
-    final db = await DatabaseHelper().database;
-
-    final List<Map<String, dynamic?>> todos = await db.query("todos");
-
-    return [
-      for (final {
-            'id': id as int,
-            'title': title as String,
-            'description': description as String,
-          } in todos)
-        Todo(id: id, title: title, description: description),
-    ];
   }
 }
 ```
