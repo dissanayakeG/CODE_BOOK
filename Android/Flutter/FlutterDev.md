@@ -1,7 +1,7 @@
 #### Flutter Apps Built as a Widget Tree
 
 At the top of the tree, there is `MaterialApp` if you use the Material Theme.
-The root widg et is mostly a stateless widget.
+The root widget et is mostly a stateless widget.
 
 ```dart
 return MaterialApp(
@@ -9,6 +9,13 @@ return MaterialApp(
     theme: ThemeData(),
     home: CustomWidget(),
 );
+```
+
+### clean and rebuild the app
+
+```sh
+cd ./android
+./gradlew clean build
 ```
 
 #### example private function which return a widget
@@ -103,9 +110,11 @@ validator: (value) {
 },
 
 //on the submit button add
-onPressed: () {if (_formKey.currentState?.validate() ?? false) {
-  _formKey.currentState?.save()
-}},
+onPressed: () {
+  if (_formKey.currentState?.validate() ?? false) {
+    _formKey.currentState?.save()
+  }
+},
 ```
 
 **TextFormField**
@@ -143,7 +152,7 @@ FutureBuilder(
 FutureBuilder(
     future: DataService().getRecepies(), //use initState method instead of this, this runs everytime widget rebuild
     builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -310,6 +319,7 @@ child: Column(
   ],
 ),
 ```
+
 ### Work with database(sqlite)
 
 #### Initialize Singleton DB connection
@@ -359,6 +369,7 @@ class DatabaseHelper {
 ```
 
 #### use database connection from a model
+
 ```dart
 //todo.dart
 import 'package:demo_app/database/db.dart';
@@ -384,6 +395,7 @@ class Todo {
     return 'Todo{id: $id, title: $title, description: $description}';
   }
 
+//method should be static in order to access from other classes like ToDo.insert
   static Future<void> insert(Todo todo) async {
     final db = await DatabaseHelper().database;
 
@@ -397,6 +409,7 @@ class Todo {
 ```
 
 #### db interactions from widgets
+
 ```dart
 void _insertInitialTodo() async {
     var todo = const Todo(
@@ -411,4 +424,3 @@ void _insertInitialTodo() async {
     return await Todo.getAllTodos();
   }
 ```
-
