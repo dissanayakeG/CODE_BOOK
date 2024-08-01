@@ -118,6 +118,43 @@ Stack(
 ),
 ```
 
+**grid view**
+
+```dart
+GridView.count(
+  crossAxisCount: 3,
+  children: List.generate(20, (index) {
+    return Container(
+     ...
+    );
+  }),
+)
+```
+
+**Drawer**
+
+```dart
+Drawer(
+  child: Container(
+    color: Colors.deepPurple[300],
+    child: ListView(
+      children: [
+        const DrawerHeader(
+          child: Center(
+            child: Text(...),
+          ),
+        ),
+        ListTile(
+          leading:
+          title:
+          onTap:
+        )
+      ],
+    ),
+  ),
+);
+```
+
 **Form**
 
 ```dart
