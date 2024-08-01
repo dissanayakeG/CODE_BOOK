@@ -81,6 +81,43 @@ SizedBox(
 )
 ```
 
+**Container**
+
+```dart
+Container(
+  width: 10.0,
+  height: 10.0,
+  color: Colors.red, //this won't work if decoration is used
+  decoration: BoxDecoration(
+    color: Colors.red,
+    borderRadius: BorderRadius.circular(50.0),
+  ),
+),
+```
+
+**Stack** and **Positioned**
+
+```dart
+Stack(
+    alignment: Alignment.center,
+    children: [
+      Icon(Icons.notifications),
+      Positioned(
+        right: 0,
+        top: 0,
+        child: Container(
+          width: 10.0,
+          height: 10.0,
+          decoration: BoxDecoration(
+            color: Colors.red,
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+        ),
+      ),
+    ],
+),
+```
+
 **Form**
 
 ```dart
@@ -140,7 +177,7 @@ Expanded()
 
 ```dart
 FutureBuilder(
-    future: DataService().getRecepies(),
+    future: DataService().getData(),
     builder: (context, snapshot) {
         return Container();
 })
@@ -150,7 +187,7 @@ FutureBuilder(
 
 ```dart
 FutureBuilder(
-    future: DataService().getRecepies(), //use initState method instead of this, this runs everytime widget rebuild
+    future: DataService().getData(), //use initState method instead of this, this runs everytime widget rebuild
     builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -271,7 +308,7 @@ class HttpService {
 ```dart
 //This is a separate class to deal with http_service class
 //initialize _httpService property on top of the class
-Future<List<Recipe>?> getProducts() async {
+Future<List<Recipe>?> getData() async {
     try {
       final response = await _httpService.get("/recipes");
 
